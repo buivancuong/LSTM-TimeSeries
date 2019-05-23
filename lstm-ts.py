@@ -49,8 +49,9 @@ X_test = X_test.reshape(X_test.shape[0],lookback, 2)
 print(X.shape)
 print(X_test.shape)
 
+
 model = Sequential()
-n_units = 30
+n_units = 10
 n_epochs = 200
 n_batch_size = 32
 model.add(LSTM(units = n_units, return_sequences = True, input_shape = (X.shape[1],2)))
@@ -60,7 +61,7 @@ model.add(Dense(units = 1))
 model.summary()
 
 model.compile(optimizer = 'adam', loss = 'mean_squared_error')
-model.fit(X, y, epochs = n_epochs, batch_size = n_batch_size)
+model.fit(X[428:,:,:], y[428:,], epochs = n_epochs, batch_size = n_batch_size)
 
 # weights, biases = model.layers[0].get_weights()
 # print(weights)
