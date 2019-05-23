@@ -51,7 +51,7 @@ print(X_test.shape)
 
 model = Sequential()
 n_units = 30
-n_epochs = 100
+n_epochs = 200
 n_batch_size = 32
 model.add(LSTM(units = n_units, return_sequences = True, input_shape = (X.shape[1],2)))
 model.add(LSTM(units = n_units, return_sequences = True))
