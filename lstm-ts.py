@@ -5,14 +5,15 @@ import math
 from sklearn.preprocessing import MinMaxScaler
 from keras import Sequential
 from keras.layers import Dense, LSTM
+from keras.models import load_model
 
 # %matplotlib inline
 # Loading DataFrame file
-stock_data = pd.read_csv("./HistoricalQuotes.csv")
+stock_data = pd.read_csv("./AA.csv")
 # Creating the new feature is average of "high" and "low" value
 stock_data["average"] = (stock_data["high"] + stock_data["low"])/2
 # Select 2 feature on DataFrame to Dataset
-input_feature = stock_data.iloc[:,[2,6]].values
+input_feature = stock_data.iloc[:,[1,6]].values
 input_data = input_feature
 
 # Visualization the Dataset
@@ -57,9 +58,9 @@ print(X_test.shape)
 # Select training model is RNN with Sequential module on Keras
 model = Sequential()
 # Initializa the parameters of Training
-n_units = 200        # number of neurals on a layer
-n_epochs = 200      # number of times to running Training
-n_batch_size = 64   # size of batch per time of Gradient Descent
+n_units = 30        # number of neurals on a layer
+n_epochs = 1      # number of times to running Training
+n_batch_size = 32   # size of batch per time of Gradient Descent
 # NOTE:
 # 1. Number of calculation must be large enough to GPU computing will be faster CPU computing
 # 2. Size of Batch should be exponent of 2 if computing on GPU. Because architecture of GPU is grid, compatible with 2^N
@@ -74,12 +75,10 @@ model.summary()
 # Select optimize parameter: "Adam Optimizer" and "Mean Square Loss"
 model.compile(optimizer = 'adam', loss = 'mean_squared_error')
 # Training model with Training set {Features, Label}
-model.fit(X[428:,:,:], y[428:,], epochs = n_epochs, batch_size = n_batch_size)
+model.fit(X[3731:,:,:], y[3731:,], epochs = n_epochs, batch_size = n_batch_size)
 
-# weights, biases = model.layers[0].get_weights()
-# print(weights)
-# print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-# print(biases)
+# Save the model
+model.save("./AA_model.h5")
 
 # Implement result of model to Test set
 predicted_value = model.predict(X_test)
